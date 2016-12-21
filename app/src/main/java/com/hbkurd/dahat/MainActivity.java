@@ -12,7 +12,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.util.Calendar;
-
+import java.util.List;
+import java.util.ArrayList;
 
 import java.util.*;
 import android.widget.AdapterView.*;public class MainActivity extends Activity 
@@ -20,8 +21,10 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
     
 	public final String days="days";
 	
-	ArrayList<String> contents;
+	List<String> contents;
 	ArrayAdapter adapter;
+	List<List<Integer>> data;
+	
 	TextView prise;
 	TextView day;
 	TextView ko;
@@ -45,6 +48,10 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 		contents = new ArrayList<String>();
 		adapter = new ArrayAdapter<String>(this,R.layout.list,R.id.holder,contents);
         ListView listView = (ListView) findViewById(R.id.lists);
+		data = new ArrayList<List<Integer>>();
+		
+		data = decode(prises);
+		print(""+data.get(0),1000);
 		
 		String parsed="";
 		for(int i=0;i<prises.length()-1;i++){
@@ -186,11 +193,20 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 		Toast.makeText(this,s,dur).show();
 	}
 	
-	public void update(ArrayList l){
+	public void update(List<String> l){
 		sum=0;
 		for(String s:l)
 			sum+=Integer.parseInt(s);
 		ko.setText("تێکڕا: "+sum);
 		adapter.notifyDataSetChanged();
+	}
+	
+	List<List<Integer>> decode(String s){
+		List<List<Integer>> Days = new ArrayList<List<Integer>>();
+		List<Integer> Prises = new ArrayList<Integer>();
+		Prises.add(23);
+		Days.add(Prises);
+		
+		return Days;
 	}
 }
