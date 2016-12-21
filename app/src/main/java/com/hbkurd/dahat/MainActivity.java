@@ -111,8 +111,28 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 					update(contents);
 				}
 			});
-		
-    }
+		}
+	
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.layout.menu , menu);
+		return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		switch (item.getItemId())
+		{
+			case R.id.mainMenuAbout:
+				Toast.makeText(this, "This is my app!!!", Toast.LENGTH_SHORT).show();
+				return true;
+			case R.id.mainMenuExit:
+				finish();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 	
 	public void readData(View view)
 	{
@@ -151,7 +171,6 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 				ret = stringBuilder.toString();
 			}
 		}catch (Throwable t){
-			print("هەڵە ڕویدا: "+t, 1000);
 			return "error";
 		}
 
