@@ -19,11 +19,10 @@ public final class R {
         public static final int holder=0x7f060000;
         public static final int ko=0x7f060003;
         public static final int lists=0x7f060002;
-        public static final int mainMenuAbout=0x7f060007;
-        public static final int mainMenuExit=0x7f060008;
-        public static final int prise=0x7f060005;
-        public static final int save=0x7f060006;
-        public static final int srinawa=0x7f060004;
+        public static final int mainMenuAbout=0x7f060006;
+        public static final int mainMenuExit=0x7f060007;
+        public static final int prise=0x7f060004;
+        public static final int save=0x7f060005;
     }
     public static final class layout {
         public static final int list=0x7f030000;

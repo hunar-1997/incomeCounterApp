@@ -19,7 +19,7 @@ import java.util.*;
 import android.widget.AdapterView.*;public class MainActivity extends Activity 
 {
     
-	public final String days="days";
+	public final String db="database";
 	
 	List<String> contents;
 	ArrayAdapter adapter;
@@ -28,50 +28,60 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 	TextView prise;
 	TextView day;
 	TextView ko;
-	Button b;
-	String prises="S,";
+	Button save;
+	ListView listView;
+	
+	
 	int sum=0;
+	int today=-1;
+	int pointer=-1;
 	
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 		
-		day=(TextView)findViewById(R.id.day);
-		day.setText("تۆماری "+getDayId());
-		
-		String r=readFromFile(days);
-		if(r!="error"){
-			prises=r;
+		String rawData=readFromFile(db);
+	
+		if( rawData!="error" )
+			data = decode(rawData);
+		else{
+			data = decode("[["+getDayId()+"]]");
+			rawData=data.toString();
+			writeToFile(db,"[["+getDayId()+"]]");
 		}
 		
 		contents = new ArrayList<String>();
 		adapter = new ArrayAdapter<String>(this,R.layout.list,R.id.holder,contents);
-        ListView listView = (ListView) findViewById(R.id.lists);
+        listView = (ListView) findViewById(R.id.lists);
 		data = new ArrayList<List<Integer>>();
 		
-		data = decode(prises);
-		print(""+data.get(0),1000);
+		data = decode(rawData);
 		
-		String parsed="";
-		for(int i=0;i<prises.length()-1;i++){
-			parsed+=prises.charAt(i);
-			if(prises.charAt(i+1)==','){
-				if(prises.charAt(i)=='S'){
-					i++;
-					parsed="";
-				}else{
-					contents.add(parsed);
-					i++;
-					parsed="";
-				}
+		for(int i=0 ; i<data.size() ; i++){
+			if(data.get(i).get(0)==getDayId()){
+				today=i;
+				pointer=today;
+				break;
 			}
+		}
+		
+		if(today==-1){
+			data.add(new ArrayList<Integer>());
+			int i=data.size()-1;
+			data.get(i).add(getDayId());
+			today=i;
+			pointer=today;
+		}
+		
+		for(int i=1 ; i<data.get(pointer).size() ; i++){
+			contents.add(""+data.get(pointer).get(i));
 		}
 		
 		ko=(TextView)findViewById(R.id.ko);
 		
 		listView.setAdapter(adapter);
-		update(contents);
+		update(data.get(pointer));
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> l, View v, int position, long id)
@@ -81,10 +91,10 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 			}
 		});
 		
-		b = (Button) findViewById(R.id.save);
+		save = (Button) findViewById(R.id.save);
 		prise = (TextView) findViewById(R.id.prise);
 		
-		b.setOnClickListener(new View.OnClickListener(){
+		save.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View view){
 				String p=prise.getText().toString();
 				if(!p.isEmpty()){
@@ -92,10 +102,10 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 						int j = Integer.parseInt(p);
 						if(j%250==0){
 							contents.add(""+j);
-							update(contents);
+							data.get(pointer).add(j);
+							update(data.get(pointer));
 							
-							prises+=p+",";
-							writeToFile(days, prises);
+							writeToFile(db, data.toString());
 						}else{
 							print("تکایە نرخێکی ڕاست بنووسە",1000);
 						}
@@ -109,15 +119,7 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 			}
 		});
 		
-		Button del = (Button) findViewById(R.id.srinawa);
-		del.setOnClickListener(new View.OnClickListener(){
-				public void onClick(View view){
-					writeToFile(days, "S,");
-					prises="S,";
-					contents.clear();
-					update(contents);
-				}
-			});
+		
 		}
 	
 	public boolean onCreateOptionsMenu(Menu menu)
@@ -143,7 +145,7 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 	
 	public void readData(View view)
 	{
-		String data = readFromFile(days);
+		String data = readFromFile(db);
 		print("The data: "+data, 1000);
 	}
 	
@@ -184,29 +186,66 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 		return ret;
 	}
 	
-	public String getDayId(){
-		Calendar c = Calendar.getInstance(); 
-		return c.get(Calendar.YEAR)+""+c.get(Calendar.DAY_OF_YEAR);
+	public int getDayId(){
+		Calendar c = Calendar.getInstance();
+		return Integer.parseInt(c.get(Calendar.YEAR)+""+(c.get(Calendar.MONTH)+1)+""+c.get(Calendar.DAY_OF_MONTH) );
+	}
+	
+	public String parseDate(int date){
+		int a = date%100;
+		date /= 100;
+		int b=date%100;
+		date /= 100;
+		return date+"/"+b+"/"+a;
 	}
 	
 	public void print(String s, int dur){
 		Toast.makeText(this,s,dur).show();
 	}
 	
-	public void update(List<String> l){
+	public void update(List<Integer> l){
 		sum=0;
-		for(String s:l)
-			sum+=Integer.parseInt(s);
+		for(int i=1;i<l.size();i++) sum+=l.get(i);
+		
 		ko.setText("تێکڕا: "+sum);
 		adapter.notifyDataSetChanged();
+		
+		day=(TextView)findViewById(R.id.day);
+		day.setText("تۆماری " + parseDate( data.get(pointer).get(0)) );
 	}
 	
 	List<List<Integer>> decode(String s){
 		List<List<Integer>> Days = new ArrayList<List<Integer>>();
-		List<Integer> Prises = new ArrayList<Integer>();
-		Prises.add(23);
-		Days.add(Prises);
-		
+		int state = 0;
+		String token="";
+		for(char c:s.toCharArray()){
+			if(c!=',' && c!='[' && c!=']' && c!=' ') {
+				token += c;
+			}else{
+				if(c=='['){
+					if(state==0)
+						state++;
+					else if(state==1){
+						Days.add(new ArrayList<Integer>());
+						state++;
+					}
+				}else if(c==']'){
+					if(state==2){
+						if(!token.isEmpty())
+							Days.get(Days.size()-1).add(Integer.parseInt(token));
+						token="";
+						state--;
+					}else if(state==1){
+						break;
+					}
+				}else if(c==','){
+					if(state==2 && !token.isEmpty()){
+						Days.get(Days.size()-1).add(Integer.parseInt(token));
+						token="";
+					}
+				}
+			}
+		}
 		return Days;
 	}
 }

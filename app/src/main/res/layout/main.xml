@@ -38,12 +38,6 @@
 			android:text="ڕۆژانی پێشوو"
 			android:onClick="readData"/>
 
-		<Button
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:text="سڕینەوە"
-			android:id="@+id/srinawa"/>
-
 	</LinearLayout>
 
 	<LinearLayout
