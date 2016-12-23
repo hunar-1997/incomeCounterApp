@@ -1,5 +1,7 @@
 package com.hbkurd.dahat;
 
+import com.hbkurd.dahat.functions;
+
 import android.app.*;
 import android.os.*;
 import android.widget.*;
@@ -16,9 +18,14 @@ import java.util.List;
 import java.util.ArrayList;
 
 import java.util.*;
-import android.widget.AdapterView.*;public class MainActivity extends Activity 
+import android.widget.AdapterView.*;
+import android.content.*;
+import android.widget.GridLayout.*;
+import android.text.*;
+public class MainActivity extends Activity 
 {
-    
+	functions fn = new functions();
+	Activity thisActivity = this;
 	public final String db="database";
 	
 	List<String> contents;
@@ -28,6 +35,7 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 	TextView prise;
 	TextView day;
 	TextView ko;
+	TextView income;
 	Button save;
 	ListView listView;
 	
@@ -41,20 +49,27 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 		
-		String rawData=readFromFile(db);
-	
+		String rawData = fn.readFromFile(MainActivity.this, db);
+		
 		if( rawData!="error" )
 			data = decode(rawData);
 		else{
 			data = decode("[["+getDayId()+"]]");
 			rawData=data.toString();
-			writeToFile(db,"[["+getDayId()+"]]");
+			fn.writeToFile(thisActivity, db,"[["+getDayId()+"]]");
 		}
 		
 		contents = new ArrayList<String>();
 		adapter = new ArrayAdapter<String>(this,R.layout.list,R.id.holder,contents);
-        listView = (ListView) findViewById(R.id.lists);
-		data = new ArrayList<List<Integer>>();
+        data = new ArrayList<List<Integer>>();
+		
+		listView = (ListView) findViewById(R.id.lists);
+		ko = (TextView)findViewById(R.id.ko);
+		income = (TextView) findViewById(R.id.income);
+		save = (Button) findViewById(R.id.save);
+		prise = (TextView) findViewById(R.id.prise);
+		
+		prise.requestFocus();
 		
 		data = decode(rawData);
 		
@@ -78,8 +93,6 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 			contents.add(""+data.get(pointer).get(i));
 		}
 		
-		ko=(TextView)findViewById(R.id.ko);
-		
 		listView.setAdapter(adapter);
 		update(data.get(pointer));
 		
@@ -87,12 +100,14 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 			public void onItemClick(AdapterView<?> l, View v, int position, long id)
 			{
 				String s = (String) l.getItemAtPosition(position);
-				print(s, 1000);
+				Dialog dialog = new Dialog(MainActivity.this);
+				dialog.setContentView(R.layout.change);
+
+				dialog.setCancelable(true);
+				dialog.setTitle("کردار: "+s);
+				dialog.show();
 			}
 		});
-		
-		save = (Button) findViewById(R.id.save);
-		prise = (TextView) findViewById(R.id.prise);
 		
 		save.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View view){
@@ -105,22 +120,21 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 							data.get(pointer).add(j);
 							update(data.get(pointer));
 							
-							writeToFile(db, data.toString());
+							fn.writeToFile(thisActivity, db, data.toString());
 						}else{
-							print("تکایە نرخێکی ڕاست بنووسە",1000);
+							fn.print(thisActivity, "تکایە نرخێکی ڕاست بنووسە");
 						}
 					}catch(Throwable e){
-						print("تکایە تەنها ژمارە بنووسە",1000);
+						fn.print(thisActivity, "تکایە تەنها ژمارە بنووسە");
 					}
 				}else{
-					print("نابێت نرخ بەتاڵ بێت",1000);
+					fn.print(thisActivity, "نابێت نرخ بەتاڵ بێت");
 				}
 				prise.setText("");
 			}
 		});
 		
-		
-		}
+	}
 	
 	public boolean onCreateOptionsMenu(Menu menu)
 	{
@@ -134,7 +148,28 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 		switch (item.getItemId())
 		{
 			case R.id.mainMenuAbout:
-				Toast.makeText(this, "This is my app!!!", Toast.LENGTH_SHORT).show();
+				AlertDialog about = new AlertDialog.Builder(MainActivity.this).create();
+				about.setTitle("دەربارەی ئەم بەرنامەیە");
+				about.setCancelable(false);
+				about.setMessage("ئەم بەرنامەیە دروستکراوە لەلایەن هونەر عومەر\nhbkurd@gmail.com\nhbkurd.weebly.com");
+				about.setButton(AlertDialog.BUTTON_NEUTRAL, "سوپاس",
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							dialog.dismiss();
+						}
+					});
+				about.show();
+				return true;
+			case R.id.mainMenuSend:
+				Intent send = new Intent(Intent.ACTION_SEND);
+				send.setType("text/plain");
+				send.putExtra(Intent.EXTRA_STREAM, data.toString());
+				startActivity(send);
+				return true;
+			case R.id.mainMenuReceive:
+				Intent rec = new Intent(Intent.ACTION_GET_CONTENT);
+				rec.setType("file/*");
+				startActivityForResult(rec, 48);
 				return true;
 			case R.id.mainMenuExit:
 				finish();
@@ -143,47 +178,11 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 		return super.onOptionsItemSelected(item);
 	}
 	
-	public void readData(View view)
+	public void history(View view)
 	{
-		String data = readFromFile(db);
-		print("The data: "+data, 1000);
-	}
-	
-	private void writeToFile(String fileName, String data) {
-		try {
-			OutputStreamWriter outputStreamWriter = new OutputStreamWriter(this.openFileOutput(fileName, Context.MODE_PRIVATE));
-			outputStreamWriter.write(data);
-			outputStreamWriter.close();
-		}catch (Throwable t){
-			print("تۆمار بەتاڵە", 1000);
-		}
-	}
-	
-	private String readFromFile(String fileName) {
-
-		String ret = "";
-
-		try {
-			InputStream inputStream = this.openFileInput(fileName);
-
-			if ( inputStream != null ) {
-				InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-				String receiveString = "";
-				StringBuilder stringBuilder = new StringBuilder();
-
-				while ( (receiveString = bufferedReader.readLine()) != null ) {
-					stringBuilder.append(receiveString);
-				}
-
-				inputStream.close();
-				ret = stringBuilder.toString();
-			}
-		}catch (Throwable t){
-			return "error";
-		}
-
-		return ret;
+		Intent historyPage = new Intent(thisActivity, History.class);
+		//i.putExtra("data", data.toString());
+		startActivity(historyPage);
 	}
 	
 	public int getDayId(){
@@ -199,15 +198,12 @@ import android.widget.AdapterView.*;public class MainActivity extends Activity
 		return date+"/"+b+"/"+a;
 	}
 	
-	public void print(String s, int dur){
-		Toast.makeText(this,s,dur).show();
-	}
-	
 	public void update(List<Integer> l){
 		sum=0;
 		for(int i=1;i<l.size();i++) sum+=l.get(i);
 		
 		ko.setText("تێکڕا: "+sum);
+		income.setText("قازانج: "+(int)(sum*0.1));
 		adapter.notifyDataSetChanged();
 		
 		day=(TextView)findViewById(R.id.day);

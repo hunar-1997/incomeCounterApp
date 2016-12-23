@@ -2,9 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
 	<item
+        android:title="ناردن"
+		android:id="@+id/mainMenuSend"/>
+	
+	<item
+        android:title="وەرگرتن"
+		android:id="@+id/mainMenuReceive"/>
+	
+	<item
         android:title="دەربارە"
 		android:id="@+id/mainMenuAbout"/>
-
+	
     <item
 		android:title="دەرچوون"
 		android:id="@+id/mainMenuExit" />
