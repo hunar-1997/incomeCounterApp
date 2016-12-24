@@ -5,21 +5,57 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
 	android:gravity="center">
-	
-	<TextView
+
+	<LinearLayout
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
-		android:text="Text"
-		android:textSize="30sp"
-		android:id="@+id/dayId"
-		android:textStyle="bold"
-		android:textColor="#EBFF03"/>
-	
-	<ListView
+		android:orientation="horizontal"
+		android:gravity="left">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="تۆماری 12/12/2012"
+			android:textSize="30sp"
+			android:id="@+id/dayId"
+			android:textStyle="bold"
+			android:textColor="#EBFF03"
+			android:paddingRight="10dp"/>
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="ڕۆژەکان"
+			android:id="@+id/showDays"
+			android:textColor="#6EFFDD"/>
+
+	</LinearLayout>
+
+	<RelativeLayout
 		android:layout_height="wrap_content"
-		android:layout_width="match_parent"
-		android:layout_weight="1.0"
-		android:id="@+id/historyList"/>
+		android:layout_width="wrap_content"
+		android:layout_weight="1.0">
+
+		<ListView
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:id="@+id/historyList"
+			android:layout_weight="1.0"/>
+
+		<Button
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:text="&gt;"
+			android:id="@+id/right"
+			android:layout_alignRight="@id/historyList"/>
+
+		<Button
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:text="&lt;"
+			android:id="@+id/left"/>
+
+	</RelativeLayout>
 
 	<LinearLayout
 		android:layout_height="wrap_content"

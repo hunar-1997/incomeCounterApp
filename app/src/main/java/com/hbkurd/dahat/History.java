@@ -17,6 +17,9 @@ public class History extends Activity
 	ListAdapter adapter;
 	List<List<Integer>> data;
 	
+	Button showDayButton;
+	Button right,left;
+	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -31,6 +34,14 @@ public class History extends Activity
 		
 		TextView day=(TextView)findViewById(R.id.dayId);
 		day.setText("تۆماری " + fn.parseDate( data.get(0).get(0) ) );
+		
+		showDayButton = (Button) findViewById(R.id.showDays);
+		right = (Button) findViewById(R.id.right);
+		left = (Button) findViewById(R.id.left);
+		
+		showDayButton.setVisibility(Button.INVISIBLE);
+		right.setVisibility(Button.INVISIBLE);
+		left.setVisibility(Button.INVISIBLE);
 	}
 	
 	public void back(View view){
