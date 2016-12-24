@@ -12,7 +12,8 @@
 		android:text="Text"
 		android:textSize="30sp"
 		android:id="@+id/day"
-		android:textStyle="bold"/>
+		android:textStyle="bold"
+		android:textColor="#EBFF03"/>
 
 	<ListView
 		android:layout_height="match_parent"
@@ -67,7 +68,8 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:text="تۆمارکردن"
-			android:id="@+id/save"/>
+			android:id="@+id/save"
+			android:textColor="#4EFF00"/>
 
 	</LinearLayout>
 

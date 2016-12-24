@@ -5,17 +5,36 @@
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
 	android:gravity="center">
-
+	
 	<TextView
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
-		android:text="تەواو سەرکەوتین"/>
-
-	<Button
+		android:text="Text"
+		android:textSize="30sp"
+		android:id="@+id/dayId"
+		android:textStyle="bold"
+		android:textColor="#EBFF03"/>
+	
+	<ListView
 		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:text="گەڕانەوە"
-		android:onClick="back"/>
+		android:layout_width="match_parent"
+		android:layout_weight="1.0"
+		android:id="@+id/historyList"/>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:gravity="center">
+
+		<Button
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:text="گەڕانەوە"
+			android:onClick="back"
+			android:textColor="#24FF00"/>
+
+	</LinearLayout>
 
 </LinearLayout>
 

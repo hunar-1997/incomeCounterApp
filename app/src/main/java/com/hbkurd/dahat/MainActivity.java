@@ -52,9 +52,9 @@ public class MainActivity extends Activity
 		String rawData = fn.readFromFile(MainActivity.this, db);
 		
 		if( rawData!="error" )
-			data = decode(rawData);
+			data = fn.decode(rawData);
 		else{
-			data = decode("[["+getDayId()+"]]");
+			data = fn.decode("[["+getDayId()+"]]");
 			rawData=data.toString();
 			fn.writeToFile(thisActivity, db,"[["+getDayId()+"]]");
 		}
@@ -71,7 +71,7 @@ public class MainActivity extends Activity
 		
 		prise.requestFocus();
 		
-		data = decode(rawData);
+		data = fn.decode(rawData);
 		
 		for(int i=0 ; i<data.size() ; i++){
 			if(data.get(i).get(0)==getDayId()){
@@ -180,22 +180,18 @@ public class MainActivity extends Activity
 	
 	public void history(View view)
 	{
+		try{
 		Intent historyPage = new Intent(thisActivity, History.class);
-		//i.putExtra("data", data.toString());
+		historyPage.putExtra("data", data.toString());
 		startActivity(historyPage);
+		}catch(Throwable e){
+			fn.print(thisActivity,e.toString());
+		}
 	}
 	
 	public int getDayId(){
 		Calendar c = Calendar.getInstance();
 		return Integer.parseInt(c.get(Calendar.YEAR)+""+(c.get(Calendar.MONTH)+1)+""+c.get(Calendar.DAY_OF_MONTH) );
-	}
-	
-	public String parseDate(int date){
-		int a = date%100;
-		date /= 100;
-		int b=date%100;
-		date /= 100;
-		return date+"/"+b+"/"+a;
 	}
 	
 	public void update(List<Integer> l){
@@ -207,41 +203,7 @@ public class MainActivity extends Activity
 		adapter.notifyDataSetChanged();
 		
 		day=(TextView)findViewById(R.id.day);
-		day.setText("تۆماری " + parseDate( data.get(pointer).get(0)) );
+		day.setText("تۆماری " + fn.parseDate( data.get(pointer).get(0)) );
 	}
 	
-	List<List<Integer>> decode(String s){
-		List<List<Integer>> Days = new ArrayList<List<Integer>>();
-		int state = 0;
-		String token="";
-		for(char c:s.toCharArray()){
-			if(c!=',' && c!='[' && c!=']' && c!=' ') {
-				token += c;
-			}else{
-				if(c=='['){
-					if(state==0)
-						state++;
-					else if(state==1){
-						Days.add(new ArrayList<Integer>());
-						state++;
-					}
-				}else if(c==']'){
-					if(state==2){
-						if(!token.isEmpty())
-							Days.get(Days.size()-1).add(Integer.parseInt(token));
-						token="";
-						state--;
-					}else if(state==1){
-						break;
-					}
-				}else if(c==','){
-					if(state==2 && !token.isEmpty()){
-						Days.get(Days.size()-1).add(Integer.parseInt(token));
-						token="";
-					}
-				}
-			}
-		}
-		return Days;
-	}
 }
