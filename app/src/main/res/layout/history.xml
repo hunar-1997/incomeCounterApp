@@ -19,15 +19,7 @@
 			android:textSize="30sp"
 			android:id="@+id/dayId"
 			android:textStyle="bold"
-			android:textColor="#EBFF03"
-			android:paddingRight="10dp"/>
-
-		<Button
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:text="ڕۆژەکان"
-			android:id="@+id/showDays"
-			android:textColor="#6EFFDD"/>
+			android:textColor="#EBFF03"/>
 
 	</LinearLayout>
 
@@ -43,17 +35,15 @@
 			android:layout_weight="1.0"/>
 
 		<Button
-			android:layout_height="match_parent"
+			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:text="&gt;"
-			android:id="@+id/right"
-			android:layout_alignRight="@id/historyList"/>
-
-		<Button
-			android:layout_height="match_parent"
-			android:layout_width="wrap_content"
-			android:text="&lt;"
-			android:id="@+id/left"/>
+			android:text="ڕۆژەکان"
+			android:id="@+id/showDays"
+			android:textColor="#6EFFDD"
+			android:layout_alignRight="@id/historyList"
+			android:layout_alignBottom="@id/historyList"
+			android:layout_marginRight="10dp"
+			android:layout_marginBottom="10dp"/>
 
 	</RelativeLayout>
 
