@@ -35,7 +35,6 @@ public class MainActivity extends Activity
 	TextView prise;
 	TextView day;
 	TextView ko;
-	TextView income;
 	Button save;
 	ListView listView;
 	
@@ -65,7 +64,6 @@ public class MainActivity extends Activity
 		
 		listView = (ListView) findViewById(R.id.lists);
 		ko = (TextView)findViewById(R.id.ko);
-		income = (TextView) findViewById(R.id.income);
 		save = (Button) findViewById(R.id.save);
 		prise = (TextView) findViewById(R.id.prise);
 		
@@ -198,8 +196,7 @@ public class MainActivity extends Activity
 		sum=0;
 		for(int i=1;i<l.size();i++) sum+=l.get(i);
 		
-		ko.setText("تێکڕا: "+sum);
-		income.setText("قازانج: "+(int)(sum*0.1));
+		ko.setText("تێکڕا: "+sum+" دینار");
 		adapter.notifyDataSetChanged();
 		
 		day=(TextView)findViewById(R.id.day);

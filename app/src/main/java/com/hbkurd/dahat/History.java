@@ -23,6 +23,8 @@ public class History extends Activity
 	ListView historyList;
 	TextView dayText;
 	
+	int state=0;
+	
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -34,36 +36,58 @@ public class History extends Activity
 		
 		content = new ArrayList<String>();
 		adapter = new ArrayAdapter<String>(this, R.layout.list, R.id.holder, content);
-		
-		if(data.size()>0)
-			for(int i=0;i<data.size();i++)
-				content.add(fn.parseDate(data.get(i).get(0)));
-		else
-			content.add("تۆمار بەتاڵە");
-		
 		historyList.setAdapter(adapter);
 		
 		dayText=(TextView)findViewById(R.id.dayId);
-		dayText.setText("ڕۆژێک هەڵبژێرە" );
+		
+		showDays();
 		
 		showDayButton = (Button) findViewById(R.id.showDays);
-		
 		showDayButton.setVisibility(Button.INVISIBLE);
+		showDayButton.setOnClickListener(new OnClickListener(){
+			public void onClick(View v){
+				showDays();
+				showDayButton.setVisibility(Button.INVISIBLE);
+			}
+		});
 		
 		historyList.setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> l, View v, int position, long id)
 				{
 					if(data.get(position).size()>0){
-						content.clear();
-						adapter.notifyDataSetChanged();
-						for(int i=1;i<data.get(position).size();i++){
-							content.add(data.get(position).get(i).toString());
+						if(state==0){
+							showSells(position);			
+							showDayButton.setVisibility(Button.VISIBLE);
 						}
-						adapter.notifyDataSetChanged();
-						
 					}
 				}
 			});
+	}
+	
+	public void showDays(){
+		state=0;
+		content.clear();
+		adapter.notifyDataSetChanged();
+		
+		for(int i=0;i<data.size();i++){
+			int sum=0;
+			for(int j=1;j<data.get(i).size();j++)
+				sum += data.get(i).get(j);
+			content.add(fn.parseDate(data.get(i).get(0))+"  "+sum+" دینار");
+		}
+			
+		adapter.notifyDataSetChanged();
+		dayText.setText("ڕۆژێک هەڵبژێرە");
+	}
+	
+	public void showSells(int position){
+		state=1;
+		content.clear();
+		adapter.notifyDataSetChanged();
+		for(int i=1;i<data.get(position).size();i++)
+			content.add(data.get(position).get(i).toString()+" دینار");
+		adapter.notifyDataSetChanged();
+		dayText.setText("تۆماری "+fn.parseDate(data.get(position).get(0)));
 	}
 	
 	public void back(View view){
