@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="wrap_content"
+	android:layout_width="match_parent"
+	android:orientation="horizontal"
+	android:gravity="left">
+
+	<TextView
+		android:layout_height="35dp"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:layout_width="35dp"
+		android:text="^"
+		android:gravity="center"
+		android:textColor="#48FF00"
+		android:textSize="25sp"
+		android:textStyle="bold"
+		android:id="@+id/status"
+		android:paddingLeft="10dp"
+		android:background="#006CFF"
+		android:paddingRight="10dp"
+		android:layout_marginLeft="10dp"/>
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="horizontal"
+		android:gravity="center">
+
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:text="دینار"
+			android:textSize="25sp"
+			android:paddingRight="10dp"
+			android:textColor="#8EFC00"/>
+
+		<TextView
+			android:layout_height="match_parent"
+			android:layout_width="wrap_content"
+			android:text="Text"
+			android:textSize="25sp"
+			android:id="@+id/thePrise"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+

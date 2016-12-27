@@ -19,7 +19,8 @@
 			android:textSize="30sp"
 			android:id="@+id/dayId"
 			android:textStyle="bold"
-			android:textColor="#EBFF03"/>
+			android:textColor="#EBFF03"
+			android:textAlignment="inherit"/>
 
 	</LinearLayout>
 
@@ -32,7 +33,8 @@
 			android:layout_height="wrap_content"
 			android:layout_width="match_parent"
 			android:id="@+id/historyList"
-			android:layout_weight="1.0"/>
+			android:layout_weight="1.0"
+			android:textAlignment="textEnd"/>
 
 		<Button
 			android:layout_height="wrap_content"
