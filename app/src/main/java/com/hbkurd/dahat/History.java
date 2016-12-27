@@ -44,7 +44,7 @@ public class History extends Activity
 		dayText=(TextView)findViewById(R.id.dayId);
 		
 		showDays();
-		/*
+		
 		showDayButton = (Button) findViewById(R.id.showDays);
 		showDayButton.setVisibility(Button.INVISIBLE);
 		showDayButton.setOnClickListener(new OnClickListener(){
@@ -53,7 +53,7 @@ public class History extends Activity
 				showDayButton.setVisibility(Button.INVISIBLE);
 			}
 		});
-		*/
+		
 		//∧∨
 		
 		historyList.setOnItemClickListener(new OnItemClickListener() {
@@ -95,10 +95,11 @@ public class History extends Activity
 		adapter.notifyDataSetChanged();
 		for(int i=1;i<data.get(position).size();i++){
 			content.add(new ArrayList<String>());
-			content.get(i).add(data.get(position).get(i).toString());
-			content.get(i).add("nop");
+			content.get(i-1).add(data.get(position).get(i).toString());
+			content.get(i-1).add("nop");
 		}
 		adapter.notifyDataSetChanged();
+		
 		dayText.setText("تۆماری "+fn.parseDate(data.get(position).get(0)));
 	}
 	
@@ -118,14 +119,16 @@ class MyAdapter extends ArrayAdapter<List<String>>
 	{
 		LayoutInflater inflater = LayoutInflater.from(getContext());
 		View view = inflater.inflate(R.layout.hlist, parent, false);
+		TextView status = (TextView) view.findViewById(R.id.status);
 		
 		String text="";
-		if(!getItem(position).get(1).equals("nop") && false){
+		
+		if(getItem(position).get(1) != "nop"){
 			int now = Integer.parseInt(getItem(position).get(1));
 			int before = (position>0)? Integer.parseInt(getItem(position-1).get(1)) :0;
 			text = now +"  ";
 			
-			TextView status = (TextView) view.findViewById(R.id.status);
+			status.setVisibility(TextView.VISIBLE);
 		
 			if(position==0){
 				status.setText("");
@@ -144,7 +147,10 @@ class MyAdapter extends ArrayAdapter<List<String>>
 				status.setBackgroundColor(Color.parseColor("#006cff"));
 				status.setTextColor(Color.parseColor("#ffffff"));
 			}
+		}else{
+			status.setVisibility(TextView.INVISIBLE);
 		}
+		
 		text += getItem(position).get(0);
 		TextView prise= (TextView) view.findViewById(R.id.thePrise);
 		prise.setText(text);
