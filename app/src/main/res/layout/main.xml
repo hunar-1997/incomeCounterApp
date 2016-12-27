@@ -15,6 +15,11 @@
 		android:textStyle="bold"
 		android:textColor="#EBFF03"/>
 
+	<View
+		android:background="?android:attr/dividerVertical"
+		android:layout_height="5dp"
+		android:layout_width="match_parent"/>
+
 	<ListView
 		android:layout_height="match_parent"
 		android:layout_width="match_parent"

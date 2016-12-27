@@ -95,7 +95,7 @@ public class MainActivity extends Activity
 			public void onItemClick(AdapterView<?> l, View v, int position, long id)
 			{
 				String s = (String) l.getItemAtPosition(position);
-				CustomDialogClass cdd = new CustomDialogClass(MainActivity.this, s, position);
+				CustomDialogClass cdd = new CustomDialogClass(thisActivity, s, position);
 				cdd.show();
 			}
 		});
@@ -139,17 +139,8 @@ public class MainActivity extends Activity
 		switch (item.getItemId())
 		{
 			case R.id.mainMenuAbout:
-				AlertDialog about = new AlertDialog.Builder(MainActivity.this).create();
-				about.setTitle("دەربارەی ئەم بەرنامەیە");
-				about.setCancelable(false);
-				about.setMessage("ئەم بەرنامەیە دروستکراوە لەلایەن:\nهونەر عومەر ڕەشید\nhbkurd@gmail.com\nhbkurd.weebly.com\nHB بۆ داهێنان");
-				about.setButton(AlertDialog.BUTTON_NEUTRAL, "سوپاس",
-					new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.dismiss();
-						}
-					});
-				about.show();
+				InfoDialog cdd = new InfoDialog(thisActivity);
+				cdd.show();
 				return true;
 			case R.id.mainMenuSend:
 				Intent send = new Intent(Intent.ACTION_SEND);
@@ -260,6 +251,35 @@ public class MainActivity extends Activity
 					sure.show();
 					break;
 				case R.id.back:
+					dismiss();
+					break;
+			}
+		}
+	}
+	
+	class InfoDialog extends Dialog implements
+	android.view.View.OnClickListener {
+
+		public Activity act;
+		public Dialog d;
+		public Button thanks;
+
+		public InfoDialog(Activity a) {
+			super(a);
+			this.act = a;
+		}
+		
+		protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			setContentView(R.layout.about);
+			thanks = (Button) findViewById(R.id.thanks);
+			thanks.setOnClickListener(this);
+		}
+
+		public void onClick(View v) {
+			switch (v.getId()) {
+				case R.id.thanks:
 					dismiss();
 					break;
 			}

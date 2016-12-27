@@ -24,6 +24,11 @@
 
 	</LinearLayout>
 
+	<View
+		android:background="?android:attr/dividerVertical"
+		android:layout_height="5dp"
+		android:layout_width="match_parent"/>
+
 	<RelativeLayout
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
