@@ -46,15 +46,13 @@ public class History extends Activity
 		showDays();
 		
 		showDayButton = (Button) findViewById(R.id.showDays);
-		showDayButton.setVisibility(Button.INVISIBLE);
+		showDayButton.setVisibility(Button.GONE);
 		showDayButton.setOnClickListener(new OnClickListener(){
 			public void onClick(View v){
 				showDays();
-				showDayButton.setVisibility(Button.INVISIBLE);
+				showDayButton.setVisibility(Button.GONE);
 			}
 		});
-		
-		//∧∨
 		
 		historyList.setOnItemClickListener(new OnItemClickListener() {
 				public void onItemClick(AdapterView<?> l, View v, int position, long id)
@@ -62,7 +60,7 @@ public class History extends Activity
 					if(data.get(position).size()>0){
 						if(state==0){
 							showSells(position);			
-							showDayButton.setVisibility(Button.VISIBLE);
+							showDayButton.setVisibility(View.VISIBLE);
 						}
 					}
 				}
@@ -128,27 +126,23 @@ class MyAdapter extends ArrayAdapter<List<String>>
 			int before = (position>0)? Integer.parseInt(getItem(position-1).get(1)) :0;
 			text = now +"  ";
 			
-			status.setVisibility(TextView.VISIBLE);
+			status.setVisibility(View.VISIBLE);
 		
 			if(position==0){
 				status.setText("");
-				status.setBackgroundColor(Color.parseColor("#006cff"));
 				status.setTextColor(Color.parseColor("#000000"));
 			}else if(now>before){
-				status.setText("∧");
-				status.setBackgroundColor(Color.parseColor("#006cff"));
+				status.setText("▲");
 				status.setTextColor(Color.parseColor("#48ff00"));
 			}else if(now<before){
-				status.setText("∨");
-				status.setBackgroundColor(Color.parseColor("#006cff"));
+				status.setText("▼");
 				status.setTextColor(Color.parseColor("#ff0000"));
 			}else{
 				status.setText("=");
-				status.setBackgroundColor(Color.parseColor("#006cff"));
 				status.setTextColor(Color.parseColor("#ffffff"));
 			}
 		}else{
-			status.setVisibility(TextView.INVISIBLE);
+			status.setVisibility(View.GONE);
 		}
 		
 		text += getItem(position).get(0);

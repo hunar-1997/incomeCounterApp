@@ -41,7 +41,6 @@ public class MainActivity extends Activity
 	
 	int sum=0;
 	int today=-1;
-	int pointer=-1;
 	
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -74,7 +73,6 @@ public class MainActivity extends Activity
 		for(int i=0 ; i<data.size() ; i++){
 			if(data.get(i).get(0)==getDayId()){
 				today=i;
-				pointer=today;
 				break;
 			}
 		}
@@ -84,26 +82,21 @@ public class MainActivity extends Activity
 			int i=data.size()-1;
 			data.get(i).add(getDayId());
 			today=i;
-			pointer=today;
 		}
 		
-		for(int i=1 ; i<data.get(pointer).size() ; i++){
-			contents.add(""+data.get(pointer).get(i));
+		for(int i=1 ; i<data.get(today).size() ; i++){
+			contents.add(""+data.get(today).get(i));
 		}
 		
 		listView.setAdapter(adapter);
-		update(data.get(pointer));
+		update(data.get(today));
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> l, View v, int position, long id)
 			{
 				String s = (String) l.getItemAtPosition(position);
-				Dialog dialog = new Dialog(MainActivity.this);
-				dialog.setContentView(R.layout.change);
-
-				dialog.setCancelable(true);
-				dialog.setTitle("کردار: "+s);
-				dialog.show();
+				CustomDialogClass cdd = new CustomDialogClass(MainActivity.this, s, position);
+				cdd.show();
 			}
 		});
 		
@@ -115,8 +108,8 @@ public class MainActivity extends Activity
 						int j = Integer.parseInt(p);
 						if(j%250==0){
 							contents.add(""+j);
-							data.get(pointer).add(j);
-							update(data.get(pointer));
+							data.get(today).add(j);
+							update(data.get(today));
 							
 							fn.writeToFile(thisActivity, db, data.toString());
 						}else{
@@ -149,7 +142,7 @@ public class MainActivity extends Activity
 				AlertDialog about = new AlertDialog.Builder(MainActivity.this).create();
 				about.setTitle("دەربارەی ئەم بەرنامەیە");
 				about.setCancelable(false);
-				about.setMessage("ئەم بەرنامەیە دروستکراوە لەلایەن هونەر عومەر\nhbkurd@gmail.com\nhbkurd.weebly.com");
+				about.setMessage("ئەم بەرنامەیە دروستکراوە لەلایەن:\nهونەر عومەر ڕەشید\nhbkurd@gmail.com\nhbkurd.weebly.com\nHB بۆ داهێنان");
 				about.setButton(AlertDialog.BUTTON_NEUTRAL, "سوپاس",
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
@@ -200,7 +193,77 @@ public class MainActivity extends Activity
 		adapter.notifyDataSetChanged();
 		
 		day=(TextView)findViewById(R.id.day);
-		day.setText("تۆماری " + fn.parseDate( data.get(pointer).get(0)) );
+		day.setText("تۆماری " + fn.parseDate( data.get(today).get(0)) );
+	}
+	
+	
+	class CustomDialogClass extends Dialog implements
+	android.view.View.OnClickListener {
+
+		public Activity act;
+		public Dialog d;
+		public Button change, delete, cancel;
+		public String value;
+		public int position;
+		public TextView selectedPrise;
+
+		public CustomDialogClass(Activity a, String val, int pos) {
+			super(a);
+			this.act = a;
+			this.value = val;
+			this.position=pos;
+		}
+
+		protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			setContentView(R.layout.change);
+			change = (Button) findViewById(R.id.change);
+			delete = (Button) findViewById(R.id.delete);
+			cancel = (Button) findViewById(R.id.back);
+			selectedPrise = (TextView) findViewById(R.id.selectedPrise);
+			change.setOnClickListener(this);
+			delete.setOnClickListener(this);
+			cancel.setOnClickListener(this);
+			selectedPrise.setText(this.value);
+		}
+
+		public void onClick(View v) {
+			switch (v.getId()) {
+				case R.id.change:
+					fn.print(MainActivity.this, "slaw");
+					break;
+				case R.id.delete:
+					AlertDialog sure = new AlertDialog.Builder(MainActivity.this).create();
+					sure.setTitle("ئاگاداری");
+					sure.setMessage("دڵنیایت لە سڕینەوەی "+this.value+"؟");
+					sure.setCancelable(true);
+					sure.setButton(AlertDialog.BUTTON_POSITIVE, "بەڵێ",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								contents.remove(position);
+								data.get(today).remove(position+1);
+								update(data.get(today));
+								fn.writeToFile(thisActivity, db, data.toString());
+								fn.print(thisActivity, "سڕیمەوە");
+								dialog.dismiss();
+								dismiss();
+							}
+						});
+					sure.setButton(AlertDialog.BUTTON_NEGATIVE, "نەخێر",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int which) {
+								fn.print(MainActivity.this, "نەم سڕیەوە");
+								dialog.dismiss();
+							}
+						});
+					sure.show();
+					break;
+				case R.id.back:
+					dismiss();
+					break;
+			}
+		}
 	}
 	
 }
