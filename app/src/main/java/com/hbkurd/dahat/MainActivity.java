@@ -38,7 +38,6 @@ public class MainActivity extends Activity
 	Button save;
 	ListView listView;
 	
-	
 	int sum=0;
 	int today=-1;
 	
@@ -84,9 +83,8 @@ public class MainActivity extends Activity
 			today=i;
 		}
 		
-		for(int i=1 ; i<data.get(today).size() ; i++){
+		for(int i=1 ; i<data.get(today).size() ; i++)
 			contents.add(""+data.get(today).get(i));
-		}
 		
 		listView.setAdapter(adapter);
 		update(data.get(today));
@@ -96,6 +94,7 @@ public class MainActivity extends Activity
 			{
 				String s = (String) l.getItemAtPosition(position);
 				CustomDialogClass cdd = new CustomDialogClass(thisActivity, s, position);
+				cdd.setCanceledOnTouchOutside(false);
 				cdd.show();
 			}
 		});
@@ -103,23 +102,13 @@ public class MainActivity extends Activity
 		save.setOnClickListener(new View.OnClickListener(){
 			public void onClick(View view){
 				String p=prise.getText().toString();
-				if(!p.isEmpty()){
-					try{
-						int j = Integer.parseInt(p);
-						if(j%250==0){
-							contents.add(""+j);
-							data.get(today).add(j);
-							update(data.get(today));
-							
-							fn.writeToFile(thisActivity, db, data.toString());
-						}else{
-							fn.print(thisActivity, "تکایە نرخێکی ڕاست بنووسە");
-						}
-					}catch(Throwable e){
-						fn.print(thisActivity, "تکایە تەنها ژمارە بنووسە");
-					}
-				}else{
-					fn.print(thisActivity, "نابێت نرخ بەتاڵ بێت");
+				int result = fn.validate(thisActivity, p);
+				if(result != 0){
+					contents.add(""+result);
+					data.get(today).add(result);
+					update(data.get(today));
+					
+					fn.writeToFile(thisActivity, db, data.toString());
 				}
 				prise.setText("");
 			}
@@ -140,6 +129,8 @@ public class MainActivity extends Activity
 		{
 			case R.id.mainMenuAbout:
 				InfoDialog cdd = new InfoDialog(thisActivity);
+				cdd.setCanceledOnTouchOutside(false);
+				cdd.setCancelable(false);
 				cdd.show();
 				return true;
 			case R.id.mainMenuSend:
@@ -222,13 +213,17 @@ public class MainActivity extends Activity
 		public void onClick(View v) {
 			switch (v.getId()) {
 				case R.id.change:
-					fn.print(MainActivity.this, "slaw");
+					changeDataDialog cdd = new changeDataDialog(thisActivity, this.value, this.position);
+					cdd.setCanceledOnTouchOutside(false);
+					cdd.show();
+					dismiss();
 					break;
 				case R.id.delete:
 					AlertDialog sure = new AlertDialog.Builder(MainActivity.this).create();
 					sure.setTitle("ئاگاداری");
 					sure.setMessage("دڵنیایت لە سڕینەوەی "+this.value+"؟");
 					sure.setCancelable(true);
+					sure.setCanceledOnTouchOutside(false);
 					sure.setButton(AlertDialog.BUTTON_POSITIVE, "بەڵێ",
 						new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int which) {
@@ -281,6 +276,64 @@ public class MainActivity extends Activity
 			switch (v.getId()) {
 				case R.id.thanks:
 					dismiss();
+					break;
+			}
+		}
+	}
+	
+	class changeDataDialog extends Dialog implements
+	android.view.View.OnClickListener {
+
+		public Activity act;
+		public Dialog d;
+		public Button back,change;
+		public EditText value;
+		String pValue;
+		int position;
+
+		public changeDataDialog(Activity a, String val, int pos) {
+			super(a);
+			this.act = a;
+			this.pValue = val;
+			this.position = pos;
+		}
+
+		protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			setContentView(R.layout.changedata);
+			back = (Button) findViewById(R.id.backButton);
+			change = (Button) findViewById(R.id.changeButton);
+			value = (EditText) findViewById(R.id.newValue);
+			back.setOnClickListener(this);
+			change.setOnClickListener(this);
+			
+			TextView t = (TextView) findViewById(R.id.title);
+			t.setText("گۆڕینی "+this.pValue+" بۆ:");
+		}
+		
+		public void onClick(View v) {
+			switch (v.getId()) {
+				case R.id.backButton:
+					dismiss();
+					break;
+				case R.id.changeButton:
+					value = (EditText) findViewById(R.id.newValue);
+					int result = fn.validate(MainActivity.this, value.getText().toString());
+					if(result!=0){
+						if(result==Integer.parseInt(pValue)){
+							fn.print(thisActivity,"هیچ گۆڕینێک ئەنجام نەدرا");
+						}else{
+							contents.set(position, result+"");
+							data.get(today).set(position+1, result);
+							update(data.get(today));
+							fn.writeToFile(thisActivity, db, data.toString());
+							fn.print(thisActivity, "گۆڕیم");
+						}
+						dismiss();
+					}else{
+						value.setText("");
+					}
 					break;
 			}
 		}

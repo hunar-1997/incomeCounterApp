@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:padding="10dp">
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:gravity="right">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:text="گۆڕینی (نرخ) بۆ:"
+			android:textSize="25sp"
+			android:id="@+id/title"
+			android:textColor="#02A9FF"/>
+
+	</LinearLayout>
+
+	<View
+		android:background="?android:attr/dividerVertical"
+		android:layout_height="5dp"
+		android:layout_width="match_parent"/>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="vertical">
+
+		<EditText
+			android:layout_height="wrap_content"
+			android:inputType="number"
+			android:layout_width="match_parent"
+			android:ems="10"
+			android:hint="نرخی نوێ"
+			android:id="@+id/newValue"
+			android:gravity="center"/>
+
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:gravity="center">
+
+			<Button
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:text="گۆڕین"
+				android:layout_weight="1.0"
+				android:id="@+id/changeButton"/>
+
+			<Button
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:text="گەڕانەوە"
+				android:layout_weight="1.0"
+				android:id="@+id/backButton"
+				android:textColor="#0AFA19"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
+
+</LinearLayout>
+

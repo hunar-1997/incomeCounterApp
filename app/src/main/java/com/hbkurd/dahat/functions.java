@@ -100,4 +100,21 @@ public class functions
 		date /= 100;
 		return date+"/"+b+"/"+a;
 	}
+	public int validate(Activity act, String p){
+		if(!p.isEmpty()){
+			try{
+				int j = Integer.parseInt(p);
+				if(j%250==0 && j!=0){
+					return j;
+				}else{
+					print(act, "تکایە نرخێکی ڕاست بنووسە");
+				}
+			}catch(Throwable e){
+				print(act, "تکایە تەنها ژمارە بنووسە");
+			}
+		}else{
+			print(act, "نابێت نرخ بەتاڵ بێت");
+		}
+		return 0;
+	}
 }

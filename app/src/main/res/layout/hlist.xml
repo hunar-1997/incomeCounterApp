@@ -31,7 +31,8 @@
 			android:text="دینار"
 			android:textSize="25sp"
 			android:paddingRight="10dp"
-			android:textColor="#8EFC00"/>
+			android:textColor="#8EFC00"
+			android:id="@+id/dinar"/>
 
 		<TextView
 			android:layout_height="match_parent"

@@ -17,34 +17,43 @@ public final class R {
     }
     public static final class id {
         public static final int back=0x7f060004;
+        public static final int backButton=0x7f060008;
+        public static final int button1=0x7f06000a;
         public static final int change=0x7f060002;
-        public static final int day=0x7f06000b;
-        public static final int dayId=0x7f060005;
+        public static final int changeButton=0x7f060007;
+        public static final int day=0x7f060012;
+        public static final int dayId=0x7f06000b;
         public static final int delete=0x7f060003;
-        public static final int historyList=0x7f060006;
-        public static final int holder=0x7f06000a;
-        public static final int ko=0x7f06000d;
-        public static final int lists=0x7f06000c;
-        public static final int mainMenuAbout=0x7f060012;
-        public static final int mainMenuExit=0x7f060013;
-        public static final int mainMenuReceive=0x7f060011;
-        public static final int mainMenuSend=0x7f060010;
-        public static final int prise=0x7f06000e;
-        public static final int save=0x7f06000f;
+        public static final int dinar=0x7f06000f;
+        public static final int historyList=0x7f06000c;
+        public static final int holder=0x7f060011;
+        public static final int ko=0x7f060014;
+        public static final int lists=0x7f060013;
+        public static final int mainMenuAbout=0x7f060019;
+        public static final int mainMenuExit=0x7f06001a;
+        public static final int mainMenuReceive=0x7f060018;
+        public static final int mainMenuSend=0x7f060017;
+        public static final int newValue=0x7f060006;
+        public static final int prise=0x7f060015;
+        public static final int save=0x7f060016;
         public static final int selectedPrise=0x7f060001;
-        public static final int showDays=0x7f060007;
-        public static final int status=0x7f060008;
+        public static final int showDays=0x7f06000d;
+        public static final int signature_canvas=0x7f060009;
+        public static final int status=0x7f06000e;
         public static final int thanks=0x7f060000;
-        public static final int thePrise=0x7f060009;
+        public static final int thePrise=0x7f060010;
+        public static final int title=0x7f060005;
     }
     public static final class layout {
         public static final int about=0x7f030000;
         public static final int change=0x7f030001;
-        public static final int history=0x7f030002;
-        public static final int hlist=0x7f030003;
-        public static final int list=0x7f030004;
-        public static final int main=0x7f030005;
-        public static final int menu=0x7f030006;
+        public static final int changedata=0x7f030002;
+        public static final int h=0x7f030003;
+        public static final int history=0x7f030004;
+        public static final int hlist=0x7f030005;
+        public static final int list=0x7f030006;
+        public static final int main=0x7f030007;
+        public static final int menu=0x7f030008;
     }
     public static final class string {
         public static final int app_name=0x7f040000;

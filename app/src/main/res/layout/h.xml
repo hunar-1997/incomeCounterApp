@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    
+	<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="#FFFFFF"
+		android:orientation="vertical" >
+
+		<com.javacodegeeks.androidcanvasexample.CanvasView
+			android:id="@+id/signature_canvas"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:textColor="#FFFFFF" />
+		<Button
+			android:id="@+id/button1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom|center"
+			android:onClick="clearCanvas"
+			android:text="Clear Canvas" />
+	</FrameLayout>
+	
+</LinearLayout>

@@ -30,15 +30,14 @@
 		android:layout_width="match_parent"/>
 
 	<RelativeLayout
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
+		android:layout_height="match_parent"
+		android:layout_width="match_parent"
 		android:layout_weight="1.0">
 
 		<ListView
-			android:layout_height="wrap_content"
+			android:layout_height="match_parent"
 			android:layout_width="match_parent"
 			android:id="@+id/historyList"
-			android:layout_weight="1.0"
 			android:textAlignment="textEnd"/>
 
 		<Button
@@ -47,10 +46,10 @@
 			android:text="ڕۆژەکان"
 			android:id="@+id/showDays"
 			android:textColor="#6EFFDD"
-			android:layout_alignRight="@id/historyList"
-			android:layout_alignBottom="@id/historyList"
 			android:layout_marginRight="10dp"
-			android:layout_marginBottom="10dp"/>
+			android:layout_marginBottom="10dp"
+			android:layout_alignBottom="@id/historyList"
+			android:layout_alignRight="@id/historyList"/>
 
 	</RelativeLayout>
 

@@ -81,10 +81,9 @@ public class History extends Activity
 			content.get(i).add( fn.parseDate(data.get(i).get(0)) );
 			content.get(i).add( sum+"" );
 		}
-			
-		adapter.notifyDataSetChanged();
-		dayText.setText("ڕۆژێک هەڵبژێرە");
 		
+		dayText.setText("ڕۆژێک هەڵبژێرە");	
+		adapter.notifyDataSetChanged();
 	}
 	
 	public void showSells(int position){
@@ -95,6 +94,11 @@ public class History extends Activity
 			content.add(new ArrayList<String>());
 			content.get(i-1).add(data.get(position).get(i).toString());
 			content.get(i-1).add("nop");
+		}
+		if(data.get(position).size()<2){
+			content.add(new ArrayList<String>());
+			content.get(0).add("e");
+			content.get(0).add("nop");
 		}
 		adapter.notifyDataSetChanged();
 		
@@ -121,7 +125,7 @@ class MyAdapter extends ArrayAdapter<List<String>>
 		
 		String text="";
 		
-		if(getItem(position).get(1) != "nop"){
+		if(!getItem(position).get(1).equals("nop")){
 			int now = Integer.parseInt(getItem(position).get(1));
 			int before = (position>0)? Integer.parseInt(getItem(position-1).get(1)) :0;
 			text = now +"  ";
@@ -147,7 +151,12 @@ class MyAdapter extends ArrayAdapter<List<String>>
 		
 		text += getItem(position).get(0);
 		TextView prise= (TextView) view.findViewById(R.id.thePrise);
-		prise.setText(text);
+		if(text.equals("e")){
+			prise.setText("تۆمار بەتاڵە");
+			view.findViewById(R.id.dinar).setVisibility(View.GONE);
+		}else
+			prise.setText(text);
+			
 		return view;
 	}
 }

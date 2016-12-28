@@ -35,7 +35,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:text="کۆی گشتی"
-			android:textSize="15sp"
+			android:textSize="20sp"
 			android:id="@+id/ko"
 			android:padding="5dp"/>
 
@@ -59,7 +59,8 @@
 			android:hint="نرخ"
 			android:layout_weight="1"
 			android:inputType="number"
-			android:id="@+id/prise"/>
+			android:id="@+id/prise"
+			android:gravity="center"/>
 
 		<Button
 			android:layout_height="wrap_content"
