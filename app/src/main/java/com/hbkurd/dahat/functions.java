@@ -37,7 +37,6 @@ public class functions
 				ret = stringBuilder.toString();
 			}
 		}catch (Throwable t){
-			//print(t+"",1000);
 			return "error";
 		}
 

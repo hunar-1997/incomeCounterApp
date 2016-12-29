@@ -22,6 +22,7 @@ import android.widget.AdapterView.*;
 import android.content.*;
 import android.widget.GridLayout.*;
 import android.text.*;
+
 public class MainActivity extends Activity 
 {
 	functions fn = new functions();
@@ -109,6 +110,7 @@ public class MainActivity extends Activity
 					update(data.get(today));
 					
 					fn.writeToFile(thisActivity, db, data.toString());
+					fn.print(thisActivity, "تۆماری نوێم زیادکرد");
 				}
 				prise.setText("");
 			}
@@ -322,7 +324,7 @@ public class MainActivity extends Activity
 					int result = fn.validate(MainActivity.this, value.getText().toString());
 					if(result!=0){
 						if(result==Integer.parseInt(pValue)){
-							fn.print(thisActivity,"هیچ گۆڕینێک ئەنجام نەدرا");
+							fn.print(thisActivity,"پێویست بە گۆڕین ناکات");
 						}else{
 							contents.set(position, result+"");
 							data.get(today).set(position+1, result);
